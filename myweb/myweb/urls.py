@@ -18,9 +18,11 @@ from django.contrib import admin
 from .views import *
 
 urlpatterns = [
-    url(r'^$',index1),
     url(r'^admin/', admin.site.urls),
-    url(r'^app1/', include('app1.urls')),
+    url(r'^$',index1),
     url(r'^login$', mylogin),
     url(r'^index$', index1),
+    url(r'^logout$', mylogout),
+    url(r'^app2/', include('app2.urls')),
+
 ]

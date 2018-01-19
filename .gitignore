@@ -2,7 +2,7 @@ imgs/
 Thumbs.db
 ehthumbs.db
 Desktop.ini
-.idea/
+.idea
 AdminLTE-2.4.2/
 
 *.py[cod]
@@ -10,5 +10,5 @@ AdminLTE-2.4.2/
 *.egg
 *.egg-info
 #dist
-build
+#build
 *.exe

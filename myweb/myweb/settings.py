@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "app1",
+    "app2",
+    "profiles",
 ]
 
 MIDDLEWARE = [
@@ -81,8 +82,17 @@ STATICFILES_DIRS = (
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'django',
+        'USER': 'django',
+        'PASSWORD': 'pip123456',
+        'HOST': '10.13.3.18',
+        'PORT': 3306,
+        'OPTIONS': {
+            #'autocommit': True,
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
     }
 }
 

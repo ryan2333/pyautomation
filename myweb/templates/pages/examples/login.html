@@ -37,7 +37,8 @@
     <p class="login-box-msg">Sign in to start your session</p>
 
 {#    <form action="../../index2.html" method="post">#}
-      <form action="#">
+{#      <form action="#" onsubmit="return false">#}
+      <div>
       <div class="form-group has-feedback">
         <input id="user" type="text" class="form-control" placeholder="username">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -60,7 +61,7 @@
         </div>
         <!-- /.col -->
       </div>
-    </form>
+    </div>
 
     <div class="social-auth-links text-center">
       <p>- OR -</p>
@@ -98,13 +99,12 @@ $('button').click(function () {
             status = data.status  //返回数据状态
             console.log(data)
             if(status==0){ //如果返回为0则跳转到首页
-                location.href="/"
+                location.href="{{ nexturl }}"
             }else{
                 console.log(data)
             }
         }
     })
-
 })
 </script>
 </body>
