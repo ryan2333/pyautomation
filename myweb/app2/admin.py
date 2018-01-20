@@ -6,3 +6,7 @@ from models import *
 
 # Register your models here.
 admin.site.register(Book2)
+
+admin.site.register(Publish)
+
+admin.site.register(Author)

@@ -24,8 +24,26 @@ class Book1(models.Model):
         # verbose_name = 'Book'
         abstract = True
 
+class Publish(models.Model):
+    name = models.CharField(max_length=32, default=u'人民邮电出版社')
+    note = models.TextField(default='test')
+    title = models.CharField(max_length=32, default='tele')
+    city = models.CharField(max_length=32, default=u'北京市')
+
+    def __unicode__(self): #在python3中，用__str__代替__unicode__
+        return self.name
+
+class Author(models.Model):
+    name = models.CharField(max_length=16,default='')
+    address = models.CharField(max_length=64, null=True,blank=True)
+    phone = models.CharField(max_length=16,default='00000000000')
+
+    def __unicode__(self): #在python3中，用__str__代替__unicode__
+        return self.name
+
 class Book2(Book1):
-    writer = models.CharField(max_length=32)
+    publish = models.ForeignKey(Publish,null=True,blank=True)
+    author = models.ManyToManyField("Author",null=True,blank=True)
 
     @property
     def priceplus(self):
