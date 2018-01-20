@@ -20,7 +20,9 @@ from .views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$',index1),
-    url(r'^login$', mylogin),
+    url(r'^good',hello.as_view()),
+    url(r'^login$', mylogin.as_view()),
+    # url(r'^logincbv$', myloginCbv.as_view()),
     url(r'^index$', index1),
     url(r'^logout$', mylogout),
     url(r'^app2/', include('app2.urls')),

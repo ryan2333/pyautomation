@@ -87,7 +87,7 @@ DATABASES = {
         'NAME': 'django',
         'USER': 'django',
         'PASSWORD': 'pip123456',
-        'HOST': '10.13.3.18',
+        'HOST': '127.0.0.1',
         'PORT': 3306,
         'OPTIONS': {
             #'autocommit': True,
