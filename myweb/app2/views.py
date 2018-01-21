@@ -5,6 +5,8 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from models import *
 from django.views import View
+from django.views.generic import TemplateView,ListView
+from django.utils.decorators import method_decorator  #装饰器装饰类
 
 # Create your views here.
 @login_required
@@ -53,3 +55,22 @@ def authorQuery(request):  #使用queryset.values获取数据库作者数据，�
     qsret = list(set(qsfans).union(set(qsincome)))
     data1 = [i.todict for i in qsret]
     return JsonResponse({'status':0, 'data':data1})
+
+@method_decorator(login_required, name='dispatch')  #装饰类的语法，作用于该类所有方法
+class authorlist(ListView):
+    model = Author
+    template_name = 'app2/authors.html'
+    context_object_name = 'authors'
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super(authorlist, self).get_context_data(**kwargs) #生成分页数据
+        context['job'] = 'pythoner'
+        return context
+
+    def get_queryset(self):
+        return self.model.objects.order_by('-id')
+
+    @method_decorator(login_required) #只作用于该方法
+    def test(self):
+        pass

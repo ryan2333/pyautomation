@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authors</title>
+</head>
+<body>
+    <p>{{ job }}</p>
+    <ul>
+        {% for au in authors %}
+            <li><span>{{ au.id }}</span><span>{{ au.name }}</span></li>
+        {% endfor %}
+
+    </ul>
+</body>
+</html>

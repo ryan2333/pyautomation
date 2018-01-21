@@ -20,7 +20,8 @@ from .views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$',index1),
-    url(r'^good',hello.as_view()),
+    url(r'^good$',hello.as_view()),
+    url(r'^good1',hello1),
     url(r'^login$', mylogin.as_view()),
     # url(r'^logincbv$', myloginCbv.as_view()),
     url(r'^index$', index1),
