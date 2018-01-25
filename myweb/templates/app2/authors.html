@@ -1,8 +1,9 @@
 
 {% extends "app2/../base.html" %}
-{% block content %}
 
-<button class="btn btn-primary">添加用户</button>
+{% block content %}
+{% include "app2/modal.html" %}
+<button class="btn btn-primary" id="adduser">添加用户</button>
 
 
     <div style="background: white">
@@ -19,12 +20,13 @@
                     <th>联系电话</th>
                     <th>地址</th>
                     <th>作品</th>
+                    <th>操作</th>
                   </tr>
                   </thead>
                   <tbody>
                     {% for author in authors %}
                         <tr>
-                            <td> <a href='#'>{{ author.name }}</a> </td>
+                            <td> <a href="/app2/author/{{ author.id }}">{{ author.name }}</a> </td>
                             <td> {{ author.phone }}</td>
                             <td> {{ author.address }}</td>
                             <td>
@@ -32,6 +34,7 @@
                                     {{ book.name }} : {{ book.price }}元
                                 {% endfor %}
                             </td>
+                        <td><button class="btn btn-warning btn-sm">修改</button><button class="btn btn-danger btn-sm">删除</button></td>
                         </tr>
                     {% endfor %}
                   </tbody>
@@ -42,25 +45,25 @@
 
           <!-- /.box -->
 
-    <p> AJAX </p>
-            <div class="box-body">
-              <div class="table-responsive">
-                <table class="table no-margin">
-                  <thead>
-                  <tr>
-                    <th>作者</th>
-                    <th>联系电话</th>
-                    <th>地址</th>
-                    <th>作品</th>
-                  </tr>
-                  </thead>
-                  <tbody id="test1">
-
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.table-responsive -->
-            </div>
+{#   <p> AJAX </p>#}
+{#            <div class="box-body">#}
+{#              <div class="table-responsive">#}
+{#                <table class="table no-margin">#}
+{#                  <thead>#}
+{#                  <tr>#}
+{#                    <th>作者</th>#}
+{#                    <th>联系电话</th>#}
+{#                    <th>地址</th>#}
+{#                    <th>作品</th>#}
+{#                  </tr>#}
+{#                  </thead>#}
+{#                  <tbody id="test1">#}
+{##}
+{#                  </tbody>#}
+{#                </table>#}
+{#              </div>#}
+{#              <!-- /.table-responsive -->#}
+{#            </div>#}
 
         <!-- 分页 -->
         <div class="panel-default">
@@ -92,8 +95,9 @@
 
 {% block js %}
 <script>
+/*
     type = 'post'
-    url = '/app1/authorapi/'
+    url = '/app2/authorapi/'
     data = {}
 
     $.ajax({
@@ -126,6 +130,31 @@
 	          //显示错误信息
                 // errorfunc()
 	        },
-	})
+	}) */
+
+$('#adduser').click(function(){
+    $('#addUserModal').modal('show')
+
+    $('#adduserbtn').click(function() {
+        name = $('#name').val()
+        phone = $('#phone').val()
+        address = $('#address').val()
+        data = {name: name, address: address, phone: phone}
+        $.ajax({
+            type: "post",
+            url: "/app2/author/2/",
+            data: data,
+            dataType: "json",
+            success: function (result) {
+                location.reload()
+            },
+            error: function () {
+
+            },
+
+        })
+    })
+})
+
 </script>
 {% endblock %}
