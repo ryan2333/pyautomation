@@ -7,23 +7,81 @@
             </div>
             <div class="modal-body">
                 <form action="#" onsubmit="return false">
-                    <div class="input-group">
-                        <span class="input-group-addon">作者</span>
-                        <input type="text" id="name" class="form-control" placeholder="author">
+
+                    <div class="form-group">
+                        <label for="name">作者</label>
+                        <input type="text" class="form-control" id="name" placeholder="Author">
                     </div>
-                    <div class="input-group">
-                        <span class="input-group-addon">电话</span>
-                        <input type="text" id="phone" class="form-control" placeholder="contact phone">
+                    <div class="form-group">
+                        <label for="phone">电话</label>
+                        <input type="text" class="form-control" id="phone" placeholder="phone">
                     </div>
-                    <div class="input-group">
-                        <span class="input-group-addon">地址</span>
-                        <input type="text" id="address" class="form-control" placeholder="address">
+                    <div class="form-group">
+                        <label for="address">联系地址</label>
+                        <input type="text" class="form-control" id="address" placeholder="Address">
+                    </div>
+                    <div class="form-group">
+                        <label for="book">作品</label>
+                        <input type="text" class="form-control" id="book" placeholder="books1,books2">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 <button type="button" id="adduserbtn" class="btn btn-primary">添加</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<div class="modal fade" id="modifyUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">修改用户</h4>
+            </div>
+            <div class="modal-body">
+                <form action="#" onsubmit="return false">
+
+                    <div class="form-group">
+                        <label for="name">作者</label>
+                        <input type="text" class="form-control" id="modifyUserName" placeholder="Author">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">电话</label>
+                        <input type="text" class="form-control" id="modifyUserPhone" placeholder="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">联系地址</label>
+                        <input type="text" class="form-control" id="modifyUserAddress" placeholder="Address">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="savebtn" class="btn btn-primary">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<div class="modal fade" id="delUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">删除用户</h4>
+            </div>
+            <div class="modal-body">
+                <form action="#" onsubmit="return false">
+                    <span>删除用户信息：</span><br />
+                    <span>用户ID：</span>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="delbtn" class="btn btn-primary">删除</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->

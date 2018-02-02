@@ -9,6 +9,9 @@ from django.views.generic import TemplateView,ListView,DetailView
 from django.utils.decorators import method_decorator  #装饰器装饰类
 from datetime import datetime
 from django.http import QueryDict
+from page import JuncheePaginator  #使用重写后的分面
+from django.db.models import Q
+from django.forms import model_to_dict
 
 # Create your views here.
 @login_required
@@ -63,15 +66,55 @@ class authorlist(ListView):
     model = Author #读取哪个表
     template_name = 'app2/authors.html'  #前端模板名称
     context_object_name = 'authors'  #前端页面循环进读取的变量
-    paginate_by = 5  #分页数据，每页多少条
+    # paginate_by = 5  #分页数据，每页多少条
+    #
+    # def get_context_data(self, **kwargs):
+    #     context = super(authorlist, self).get_context_data(**kwargs) #生成分页数据
+    #     context['job'] = 'pythoner'
+    #     return context
 
-    def get_context_data(self, **kwargs):
-        context = super(authorlist, self).get_context_data(**kwargs) #生成分页数据
-        context['job'] = 'pythoner'
-        return context
+    def get_queryset(self,search): #按条件查询，默认是返回所有，可以生写，根据条件返回数据
+        qs = self.model.objects.order_by('-id')
+        if search:
+            qs = qs.filter(Q(name__contains=search)|Q(address__contains=search))
+        return  qs
 
-    def get_queryset(self): #按条件查询，默认是返回所有，可以生写，根据条件返回数据
-        return self.model.objects.order_by('-id') #排序
+    def get(self, request, *args, **kwargs):  #如果请求url带ID，则显示单用户信息，如果不带id则显示所有用户信息
+        pk = kwargs.get('pk')
+        if pk:
+            obj = self.model.objects.get(id=pk)
+            data = model_to_dict(obj, exclude=[])
+            return JsonResponse({'status':0, 'data':data})
+        else:
+            page_num = request.GET.get('page', 1)
+            search = request.GET.get('search')
+            qs = self.get_queryset(search)
+            pageobj = JuncheePaginator(qs)
+            wdata = pageobj.pagecomputer(page_num)
+            return render(request, self.template_name,{'authors': wdata[0], 'allpages': wdata[1], 'search':search})
+
+    def post(self, request, *args, **kwargs):
+        # name = request.POST.get('name')
+        # phone = request.POST.get('phone')
+        # address = request.POST.get('address')
+        #
+        # Author.objects.create(name=name,phone=phone,address=address)
+        #
+        # #等价于
+        # #Author.objects.create(**QueryDict(request.body).dict())
+        self.model.objects.create(**QueryDict(request.body).dict())
+        return JsonResponse({'status':0})
+
+    def put(self, request,*args,**kwargs):
+        pk = kwargs.get('pk')
+        self.model.objects.filter(id=pk).update(**QueryDict(request.body).dict())
+        return JsonResponse({'status': 0})
+
+    def delete(self,request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        self.model.objects.get(id=pk).delete()
+        return JsonResponse({'status':0})
+
 
     @method_decorator(login_required) #只作用于该方法
     def test(self):
@@ -87,13 +130,23 @@ class authorDetail(DetailView):
 
 
     def post(self, request, *args, **kwargs):
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        address = request.POST.get('address')
+        # name = request.POST.get('name')
+        # phone = request.POST.get('phone')
+        # address = request.POST.get('address')
+        #
+        # Author.objects.create(name=name,phone=phone,address=address)
+        #
+        # #等价于
+        # #Author.objects.create(**QueryDict(request.body).dict())
+        self.model.objects.create(**QueryDict(request.body).dict())
+        return JsonResponse({'status':0})
 
-        Author.objects.create(name=name,phone=phone,address=address)
+    def put(self, request,*args,**kwargs):
+        pk = kwargs.get('pk')
+        self.model.objects.filter(id=pk).update(**QueryDict(request.body).dict())
+        return JsonResponse({'status': 0})
 
-        #等价于
-        #Author.objects.create(**QueryDict(request.body).dict())
-        #self.model.objects.create(**QueryDict(request.body).dict())
+    def delete(self,request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        self.model.objects.get(id=pk).delete()
         return JsonResponse({'status':0})

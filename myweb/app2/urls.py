@@ -12,6 +12,6 @@ urlpatterns = [
     url(r'book$',bookQuery),
     url(r'author/$',authorQuery),
     url(r'cbv$',cbv.as_view()), #类视图需使用此种方法执行对应的函数，类名.as_view()
-    url(r'authorlist/$', authorlist.as_view()),
+    url(r'authorlist/(?P<pk>\d+)?/?$', authorlist.as_view()),
     url(r'author/(?P<pk>\d+)/$', authorDetail.as_view()),
 ]

@@ -1,4 +1,4 @@
-"""myweb URL Configuration
+"""testpro URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.11/topics/http/urls/
@@ -19,14 +19,6 @@ from .views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$',index1),
-    url(r'^good$',hello.as_view()),
-    url(r'^good1/$',hello1),
-    url(r'^login', mylogin.as_view()),
-    # url(r'^logincbv$', myloginCbv.as_view()),
-    url(r'^index/$', index1),
-    url(r'^logout/$', mylogout),
-    url(r'^app2/', include('app2.urls')),
-    url(r'^appApi/', include('appApi.urls')),
-
+    url(r'^$',indexpage),
+    url(r'^myapp/', include('myapp.urls')),
 ]

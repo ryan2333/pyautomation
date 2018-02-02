@@ -3,11 +3,22 @@
 
 {% block content %}
 {% include "app2/modal.html" %}
+
+ <br />
 <button class="btn btn-primary" id="adduser">添加用户</button>
-
-
+<br />
+<div class="col-md-3">
+    <div class="input-group">
+        <input id="souinput" type="text" class="form-control" value="{{ request.GET.search }}">
+        <span class="input-group-btn">
+            <a id="tiaozhuansearch" href="">
+                <button id="seabtn" class="btn btn-default" type="button">Go</button>
+            </a>
+        </span>
+    </div>
+</div><br /><br />
     <div style="background: white">
-{{ job }}
+
 
           <!-- TABLE: LATEST ORDERS -->
             <!-- /.box-header -->
@@ -34,7 +45,7 @@
                                     {{ book.name }} : {{ book.price }}元
                                 {% endfor %}
                             </td>
-                        <td><button class="btn btn-warning btn-sm">修改</button><button class="btn btn-danger btn-sm">删除</button></td>
+                        <td><button class="btn btn-warning btn-sm mdf" ckvalue="{{ author.id }}">修改</button><button class="btn btn-danger btn-sm del" ckid="{{ author.id }}" ckname="{{ author.name }}">删除</button></td>
                         </tr>
                     {% endfor %}
                   </tbody>
@@ -45,28 +56,8 @@
 
           <!-- /.box -->
 
-{#   <p> AJAX </p>#}
-{#            <div class="box-body">#}
-{#              <div class="table-responsive">#}
-{#                <table class="table no-margin">#}
-{#                  <thead>#}
-{#                  <tr>#}
-{#                    <th>作者</th>#}
-{#                    <th>联系电话</th>#}
-{#                    <th>地址</th>#}
-{#                    <th>作品</th>#}
-{#                  </tr>#}
-{#                  </thead>#}
-{#                  <tbody id="test1">#}
-{##}
-{#                  </tbody>#}
-{#                </table>#}
-{#              </div>#}
-{#              <!-- /.table-responsive -->#}
-{#            </div>#}
-
         <!-- 分页 -->
-        <div class="panel-default">
+    <!--    <div class="panel-default">
             <center>
                 <ul class="pagination">
                     <li><a href="{{ request.path }}?page=1">&laquo;</a></li>
@@ -86,8 +77,30 @@
                     <li><a href="{{ request.path }}?page={{ page_obj.paginator.num_pages }}&souword={{ request.GET.souword }}">&raquo;</a></li>
                 </ul>
             </center>
-        </div>
+        </div>-->
+        <div class="yahoo2" style="margin-left:1%">
+            {% if authors.has_previous %}
+                <a class='paginator' href='?page={{ authors.previous_page_number }}&search={{ search }}'><span>上一页</span></a>
+            {% endif %}
+            {% if authors.number > 5 %}
+                <a class="paginator" href='?page=1&search={{ search }}'><span>1...</span></a>
+            {% endif %}
+            {% for page in authors.paginator.page_range_ext %}
+                {% if page == authors.number %}
+                    <span id="currentpage" ckvalue='{{ page }}'>{{ page }}</span>
+                {% else %}
+                    <a class="paginator" href='?page={{ page }}&search={{ search }}' title='{{ page }}'><span>{{ page }}</span></a>
+                {% endif %}
+            {% endfor %}
+            {% if authors.number|add:'4' < allpages %}
+                <a class="paginator" href='?page={{ allpages }}&search={{ search }}'><span>...{{ allpages }}</span></a>
+            {% endif %}
+            {% if authors.has_next %}
+                <a class="paginator" href="?page={{ authors.next_page_number }}&search={{ search }}"><span>下一页</span></a>
+            {% endif %}
     </div>
+    </div>
+
 
 
 
@@ -131,7 +144,7 @@
                 // errorfunc()
 	        },
 	}) */
-
+//增加
 $('#adduser').click(function(){
     $('#addUserModal').modal('show')
 
@@ -142,7 +155,7 @@ $('#adduser').click(function(){
         data = {name: name, address: address, phone: phone}
         $.ajax({
             type: "post",
-            url: "/app2/author/2/",
+            url: "/app2/authorlist/2/",
             data: data,
             dataType: "json",
             success: function (result) {
@@ -155,6 +168,58 @@ $('#adduser').click(function(){
         })
     })
 })
+//修改
+$(".mdf").click(function(){
+    aid = $(this).attr('ckvalue')
+    var name = $(this).parents("tr").children("td").eq(0).text()
+    var phone = $(this).parents("tr").children("td").eq(1).text()
+    var address = $(this).parents("tr").children("td").eq(2).text()
+    $('#modifyUserModal').modal({show:true, backdrop: 'static'})
+    $('#modifyUserName').attr("value",name)
+    $('#modifyUserPhone').attr("value",phone)
+    $('#modifyUserAddress').attr("value",address)
+    $('#savebtn').unbind('click').bind('click',function(){
+        name = $('#modifyUserName').val()
+        phone = $('#modifyUserPhone').val()
+        address = $('#modifyUserAddress').val()
+        $.ajax({
+            type:"put",
+            url:"/app2/author/"+aid+"/",
+            data:{name:name,phone:phone,address:address} ,
+            dataType:"json",
+            success:function(result){
+                location.reload()
+            },
+            error:function(){
+                alter('put error!')
+            },
+        })
+    })
+})
 
+$(".del").click(function(){
+    aid = $(this).attr('ckid')
+    aname = $(this).attr('ckname')
+    $.ajax({
+        type: "delete",
+        url: "/app2/author/"+aid+"/",
+        data:{},
+        dateType: "json",
+        success: function(result){
+            if (result.status == 0){
+                alert(aname+"删除成功")
+                window.location.reload()
+            }
+        },
+        error: function(){
+            alert('delete error')
+        }
+    })
+})
+$("#seabtn").click(function(){
+    var search = $("#souinput").val()
+    url = "?search="+search
+    $("#tiaozhuansearch").attr("href",url)
+})
 </script>
 {% endblock %}
