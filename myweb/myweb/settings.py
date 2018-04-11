@@ -27,7 +27,6 @@ SECRET_KEY = 'x#ad(eekiz=*z9b3#@x&$di*rmsy-y7%vfv$jcct=o2+2b5=98'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-LOGIN_URL = '/login'  #登陆失败跳转到自写登陆页
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
@@ -79,6 +78,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'myweb.wsgi.application'
+
+LOGIN_URL = '/login'  #登陆失败跳转到自写登陆页
 STATIC = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR,'static'),

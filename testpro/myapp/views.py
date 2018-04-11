@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.http import HttpResponse, request
+from django.http import HttpResponse, request,Http404
 
 from django.shortcuts import render
 
@@ -20,3 +20,4 @@ class index(CklistView):
         context['testjob'] = 'Linux'
         context['len'] = len(self.object_list)
         return context
+

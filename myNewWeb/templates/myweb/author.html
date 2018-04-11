@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+作者名称：{{ author.name }}</br>
+书单：</br>
+    <ul>
+        {% for book in author.book2_set.all %}  <!--获取作者所有作品信息-->
+            <li>
+                {{ book.name }}----{{ book.price }}  <!--显示作品名称及价格-->
+            </li>
+        {% endfor %}
+    </ul>
+当前用户：{{ request.user }} </br>
+访问时间：{{ timenow }} </br>
+{% endblock %}

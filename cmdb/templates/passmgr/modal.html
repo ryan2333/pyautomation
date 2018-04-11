@@ -1,0 +1,123 @@
+<div class="modal fade" id="addAccountModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">添加用户</h4>
+            </div>
+            <div class="modal-body">
+                <form action="#" onsubmit="return false">
+
+                    <div class="form-group">
+                        <label for="account">帐号</label>
+                        <input type="text" class="form-control" id="account" placeholder="account">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">密码</label>
+                        <input type="text" class="form-control" id="password" placeholder="新密码">
+                    </div>
+                    <div class="form-group">
+                        <label for="bpasswd1">历史密码1</label>
+                        <input type="text" class="form-control" id="bpasswd1" placeholder="历史密码1">
+                    </div>
+                    <div class="form-group">
+                        <label for="bpasswd2">历史密码2</label>
+                        <input type="text" class="form-control" id="bpasswd2" placeholder="历史密码2">
+                    </div>
+                    <div class="form-group">
+                        <label for="bpasswd3">历史密码3</label>
+                        <input type="text" class="form-control" id="bpasswd3" placeholder="历史密码3">
+                    </div>
+                    <div class="form-group">
+                        <label for="">主机IP</label>
+                        <input type="text" class="form-control" id="host" placeholder="host ip">
+                    </div>
+                    <div class="form-group">
+                        <label for="descript">备注</label>
+                        <input type="text" class="form-control" id="descript" placeholder="备注">
+                    </div>
+
+                </form>
+            </div>
+            <div id="adderrinfo" hidden="hidden">
+
+            </div>
+            <div id="info" style="margin-left: 10px;color: red;font-weight: bold; text-align: center"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="savepasswdbtn" class="btn btn-primary">添加</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<div class="modal fade" id="modifyAccountModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">修改用户</h4>
+            </div>
+            <div class="modal-body">
+                <form action="#" onsubmit="return false">
+                    <div class="form-group">
+                        <label for="modifyaccount">帐号</label>
+                        <input type="text" class="form-control" id="modifyaccount" placeholder="account" readonly="readonly">
+                    </div>
+                    <div class="form-group">
+                        <label for="modifypassword">密码</label>
+                        <input type="text" class="form-control" id="modifypassword" placeholder="新密码">
+                    </div>
+                    <div class="form-group">
+                        <label for="modifybpasswd1">历史密码1</label>
+                        <input type="text" class="form-control" id="modifybpasswd1" placeholder="历史密码1">
+                    </div>
+                    <div class="form-group">
+                        <label for="modifybpasswd2">历史密码2</label>
+                        <input type="text" class="form-control" id="modifybpasswd2" placeholder="历史密码2">
+                    </div>
+                    <div class="form-group">
+                        <label for="modifybpasswd3">历史密码3</label>
+                        <input type="text" class="form-control" id="modifybpasswd3" placeholder="历史密码3">
+                    </div>
+                    <div class="form-group">
+                        <label for="modifyhost">主机IP</label>
+                        <input type="text" class="form-control" id="modifyhost" placeholder="host ip">
+                    </div>
+                    <div class="form-group">
+                        <label for="modifydescript">备注</label>
+                        <input type="text" class="form-control" id="modifydescript" placeholder="备注">
+                    </div>
+                </form>
+            </div>
+            <div id="mdferrinfo" hidden="hidden">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="savemdfbtn" class="btn btn-primary">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<div class="modal fade" id="delUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">删除用户</h4>
+            </div>
+            <div class="modal-body">
+                <form action="#" onsubmit="return false">
+                    <span>删除用户信息：</span><br />
+                    <span>用户ID：</span>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="delbtn" class="btn btn-primary">删除</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>

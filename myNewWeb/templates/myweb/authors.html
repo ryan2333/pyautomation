@@ -1,0 +1,207 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+{% include "myweb/modal.html" %}
+
+ <br />
+<button class="btn btn-primary" id="addauthorbtn">添加作者</button>
+<br /><br />
+<div class="col-md-3">
+    <div class="input-group">
+        <input id="souinput" type="text" class="form-control" value="{{ request.GET.search }}">
+        <span class="input-group-btn">
+            <a id="tiaozhuansearch" href="">
+                <button id="seabtn" class="btn btn-default" type="button">Go</button>
+            </a>
+        </span>
+    </div>
+</div><br /><br />
+    <div style="background: white">
+
+
+          <!-- TABLE: LATEST ORDERS -->
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="table-responsive">
+                <table class="table no-margin">
+                  <thead>
+                  <tr>
+                    <th>作者</th>
+                    <th>联系电话</th>
+                    <th>地址</th>
+                    <th>作品</th>
+                    <th>操作</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    {% for author in authors %}
+                        <tr>
+                            <td> <a href="/myweb/authordetail/{{ author.id }}">{{ author.name }}</a> </td>
+                            <td> {{ author.phone }}</td>
+                            <td> {{ author.address }}</td>
+                            <td>
+                                {% for book in author.book2_set.all %} <!--获取作者所有作品信息-->
+                                    <li> {{ book.name }} : {{ book.price }}元({{ book.publish }})</li> <!--显示作品名称及价格-->
+                                {% endfor %}
+                            </td>
+                        <td><button class="btn btn-warning btn-sm mdf" authorid="{{ author.id }}">修改</button><button class="btn btn-danger btn-sm del" aid="{{ author.id }}">删除</button></td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+
+          <!-- /.box -->
+        <div class="panel-default">
+            <center>
+                <ul class="pagination">
+                    <li><a href="{{ request.path }}?page=1">&laquo;</a></li>
+                    {% if page_obj.has_previous %}
+                    <li><a href="{{ request.path }}?page={{ page_obj.previous_page_number }}&souword={{ request.GET.souword }}">上一页</a></li>
+                    {% else %}
+                        <li class="previous disabled"><a>上一页</a></li>
+                    {% endif %}
+                    {% for i in page_obj.paginator.page_range %}
+                    <li {% if page_obj.number == i %}class="active"{% endif %}><a href="{{ request.path }}?page={{ i }}&souword={{ request.GET.souword }}">{{ i }}</a></li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li><a href="{{ request.path }}?page={{ page_obj.next_page_number }}&souword={{ request.GET.souword }}">下一页</a></li>
+                    {% else %}
+                        <li class="previous disabled"><a>下一页</a></li>
+                    {% endif %}
+                    <li><a href="{{ request.path }}?page={{ page_obj.paginator.num_pages }}&souword={{ request.GET.souword }}">&raquo;</a></li>
+                </ul>
+            </center>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block js %}
+<script>
+    //新增作者
+    $('#addauthorbtn').click(function () { //点击添加作者按钮，弹出模态框
+        $('#addAuthorModal').modal('show')
+    })
+    $('#saveauthorbtn').click(function () { //点击添加按钮，获取填写值，并使用ajax发送到后端
+        name = $('#name').val()
+        address = $('#address').val()
+        phone = $('#phone').val()
+        bks = $('#books').val().split(' ')  //将书按空格分隔，生成一个数组
+        books = []
+        for (i=0;i<bks.length;i++){  //去掉多余的空格
+            if (bks[i] != ""){
+                books.push(bks[i])
+            }
+        }
+        console.log(books)
+        $.ajax({
+            type: "post",
+            url: "/myweb/authordetail/",
+            data: {name:name, phone:phone,address:address,books:JSON.stringify(books)}, //需使用Json.stringify()将数组转换为字符串
+            dataType: 'json',
+            success: function (result) {
+                status = result.status  //获取后端返回状态
+                if (status == 255) {
+                    bks = result.data  //获取后端返回数据
+                    errbks = '不存在的书：'
+                    for (i=0;i<bks.length;i++){
+                        errbks += bks[i].name + ' '
+                    }
+                    $('#info').html(errbks)
+                } else if (status == 0) {
+                    location.reload() //刷新页面
+                }
+            },
+            error: function () {
+
+            },
+        })
+    })
+
+    //修改作者信息
+    $('.mdf').click(function () {
+        $('#modifyAuthorModal').modal('show')
+        id = $(this).attr('authorid')
+        $.ajax({
+            type: "get",
+            url: '/myweb/authorapi/' + id,
+            data: {},
+            dataType: 'json',
+            success: function (result) {
+                console.log(result)
+                books =  result.data.books
+                chkbox = ''
+                for (i=0;i<books.length;i++){
+                    chkbox += '<tr>' + '<td><input type="checkbox" checked=checked bookid=' + books[i].id + '>' + '</td>' + '<td>' + books[i].bookname + '</td>' + '</tr>'
+                }
+                $('#selectbooks').html(chkbox)
+            },
+            error: function () {
+
+            },
+        })
+        name = $(this).parents('tr').children('td').eq(0).text()  //获取按钮父元素tr的子元素td的第0个元素
+        phone = $(this).parents('tr').children('td').eq(1).text()
+        address = $(this).parents('tr').children('td').eq(2).text()
+        $('#modifyUserName').attr('value',$.trim(name))  //给输入框赋值
+        $('#modifyUserPhone').attr('value',$.trim(phone))
+        $('#modifyUserAddress').attr('value',$.trim(address))
+
+        //点击保存按钮发送数据给后端
+        $('#savemdfbtn').click(function () {
+            name = $('#modifyUserName').val()
+            address = $('#modifyUserAddress').val()
+            phone = $('#modifyUserPhone').val()
+            bookids = []
+            $('#selectbooks input[type="checkbox"]').each(function(){  //取出所有checkbox的元素
+                if (this.checked == true) {  //判断checkbox是否选中
+                //if ($(this).is(":checked")){} //判断checkbox是否选中
+                    bookids.push($(this).attr('bookid'))
+                }
+
+            })
+            $.ajax({
+                type: 'put',
+                url: '/myweb/authordetail/' + id,
+                data: {name:name,phone:phone,address:address,bookids:JSON.stringify(bookids)},
+                dataType: 'json',
+                success: function (result) {
+                    status = result.status
+                    if (status == 0){
+                        location.reload()
+                    }
+                },
+                error: function () {
+
+                },
+            })
+        })
+    })
+    //删除作者信息
+    $('.del').click(function () {
+        id = $(this).attr('aid')
+        $.ajax({
+            type: 'delete',
+            url: '/myweb/authordetail/' + id,
+            data: {},
+            dataType: 'json',
+            success: function (result) {
+                status = result.status
+                if (status == 0){
+                    location.reload()
+                }
+            },
+            error: function () {
+
+            },
+        })
+    })
+</script>
+{% endblock %}
