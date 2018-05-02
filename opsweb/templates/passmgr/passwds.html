@@ -1,0 +1,201 @@
+
+{% extends "base.html" %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="/static/DataTables-1.10.15/media/css/dataTables.bootstrap.css" />
+{% endblock %}
+{% block content %}
+{% include "passmgr/modal.html" %}
+
+
+<div class="col-md-3">
+    <div class="input-group" style="margin-top: 5px">
+        <input id="souinput" type="text" class="form-control" value="{{ request.GET.souword }}">
+        <span class="input-group-btn">
+            <a id="tiaozhuansearch" href="">
+                <button id="seabtn" class="btn btn-default btn-primary" type="button">Go</button>
+            </a>
+            <button class="btn btn-primary" id="addAccount" style="margin-left: 10px">添加密码</button>
+        </span>
+    </div>
+</div>
+    <br /><br />
+    <div style="background: white">
+
+
+          <!-- TABLE: LATEST ORDERS -->
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="table-responsive">
+                <table class="table no-margin" id="myTable">
+                  <thead>
+                  <tr>
+                    <th>用户帐号</th>
+{#                    <th>用户密码</th>#}
+{#                    <th>历史密码1</th>#}
+{#                    <th>历史密码2</th>#}
+{#                    <th>历史密码3</th>#}
+                    <th>主机</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    {% for pass in passwds %}
+                        <tr>
+                            <td><a href="/passmgr/passapi/{{ pass.id }}/">{{ pass.account }}</a></td>
+{#                            <td> {{ pass.password }}</td>#}
+{#                            <td> {{ pass.bpasswd1 }}</td>#}
+{#                            <td> {{ pass.bpasswd2 }}</td>#}
+{#                            <td> {{ pass.bpasswd3 }}</td>#}
+                            <td> {{ pass.host }} </td>
+                            <td> {{ pass.descript }} </td>
+                        <td><button class="btn btn-warning btn-sm mdfpasswd" passid="{{ pass.id }}">修改</button><button class="btn btn-danger btn-sm delpasswd" passid="{{ pass.id }}" ckname="{{ author.name }}">删除</button></td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+
+          <!-- /.box -->
+        <div class="panel-default">
+            <center>
+                <ul class="pagination">
+                    <li><a href="{{ request.path }}?page=1">&laquo;</a></li>
+                    {% if page_obj.has_previous %}
+                    <li><a href="{{ request.path }}?page={{ page_obj.previous_page_number }}&souword={{ request.GET.souword }}">上一页</a></li>
+                    {% else %}
+                        <li class="previous disabled"><a>上一页</a></li>
+                    {% endif %}
+                    {% for i in page_obj.paginator.page_range %}
+                    <li {% if page_obj.number == i %}class="active"{% endif %}><a href="{{ request.path }}?page={{ i }}&souword={{ request.GET.souword }}">{{ i }}</a></li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li><a href="{{ request.path }}?page={{ page_obj.next_page_number }}&souword={{ request.GET.souword }}">下一页</a></li>
+                    {% else %}
+                        <li class="previous disabled"><a>下一页</a></li>
+                    {% endif %}
+                    <li><a href="{{ request.path }}?page={{ page_obj.paginator.num_pages }}&souword={{ request.GET.souword }}">&raquo;</a></li>
+                </ul>
+            </center>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block js %}
+{#<script src="/static/DataTables-1.10.15/media/js/jquery.js"></script>#}
+{#<script src="/static/DataTables-1.10.15/media/js/jquery.dataTables.min.js"></script>#}
+{#<script type="text/javascript" language="javascript" src="/static/DataTables-1.10.15/media/js/dataTables.bootstrap.js"></script>#}
+
+<script>
+    $('#addAccount').click(function () { //点击添加作者按钮，弹出模态框
+        $('#addAccountModal').modal('show')
+    })
+    $('#savepasswdbtn').click(function () { //点击添加按钮，获取填写值，并使用ajax发送到后端
+        account = $('#account').val()
+        password = $('#password').val()
+        bpasswd1 = $('#bpasswd1').val()
+        bpasswd2 = $('#bpasswd2').val()
+        bpasswd3 = $('#bpasswd3').val()
+        host = $('#host').val()
+        descript = $('#descript').val()
+        $.ajax({
+            type: "post",
+            url: "/passmgr/passdetail/",
+            data: {
+                account: account,
+                password: password,
+                bpasswd1: bpasswd1,
+                bpasswd2: bpasswd2,
+                bpasswd3: bpasswd3,
+                host: host,
+                descript: descript
+            },
+            dataType: 'json',
+            success: function (result) {
+                console.log(result)
+                status = result.status  //获取后端返回状态
+                if (status == 0) {
+                    location.reload() //刷新页面
+                }
+            },
+            error: function () {
+
+            },
+        })
+    })
+    $('.mdfpasswd').click(function () {
+        $('#modifyAccountModal').modal('show')
+        id = $(this).attr('passid')
+        account = $(this).parents('tr').children('td').eq(0).text()
+        password = ""
+        bpasswd1 = ""
+        bpasswd2 = ""
+        bpasswd3 = ""
+        host = $(this).parents('tr').children('td').eq(1).text()
+        descript = $(this).parents('tr').children('td').eq(2).text()
+        $('#modifyaccount').attr('value',account)
+        $('#modifypassword').attr('value',password)
+        $('#modifybpasswd1').attr('value',bpasswd1)
+        $('#modifybpasswd2').attr('value',bpasswd2)
+        $('#modifybpasswd3').attr('value',bpasswd3)
+        $('#modifyhost').attr('value',$.trim(host))
+        $('#modifydescript').attr('value',$.trim(descript))
+    })
+    $('#savemdfbtn').click(function () {
+        account = $('#modifyaccount').val()
+        password = $('#modifypassword').val()
+        bpasswd1 = $('#modifybpasswd1').val()
+        bpasswd2 = $('#modifybpasswd2').val()
+        bpasswd3 = $('#modifybpasswd3').val()
+        host = $('#modifyhost').val()
+        descript = $('#modifydescript').val()
+        $.ajax({
+            type: 'put',
+            url: '/passmgr/passdetail/'+ id,
+            data: {account:account,password:password,bpasswd1:bpasswd1,bpasswd2:bpasswd2,bpasswd3:bpasswd3,host:host,descript:descript},
+            dataType: 'json',
+            success: function (result) {
+                status = result.status
+                if (status == 0){
+                    location.reload()
+                }
+            },
+            error: function () {
+
+            },
+        })
+    })
+    $('.delpasswd').unbind('click').bind('click',function () {
+        id = $(this).attr('passid')
+        $.ajax({
+            type: 'delete',
+            url: '/passmgr/passdetail/'+ id,
+            data: {},
+            dataType: 'json',
+            success: function (result) {
+                status=result.status
+                if (status == 0){
+                    location.reload()
+                }
+            },
+            error: function () {
+
+            },
+        })
+    })
+    //搜索跳转
+    $("#seabtn").click(function(){
+        var souword = $("#souinput").val()
+        url = "?souword="+souword
+        $("#tiaozhuansearch").attr("href",url)
+    })
+{#$('#myTable').DataTable();#}
+</script>
+{% endblock %}

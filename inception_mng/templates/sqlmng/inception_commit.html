@@ -108,28 +108,28 @@ $('.ace').change(function () {
     var env = $('input[name="form-field-radio"]').filter(":checked").val()
 
     $.ajax({
-    type: "post",
-    url: "/sqlmng/autoselect/",
-    data: {env:env},
-    dataType: 'json',
-    success: function (result) {
-        dbs = result.dbs
-        mngs = result.mngs
-        $('#targetdb').empty()  //清空Select
-        $('#treater').empty()  //清空Select
-        for (d in dbs){
-            var dbshtml = '<option>'+dbs[d]+'</option>'
-            $('#targetdb').append(dbshtml) //为模态框渲染dbname数据
-        }
-        for (m in mngs){
-            var mngshtml = '<option>'+mngs[m]+'</option>'
-            $('#treater').append(mngshtml) //为模态框渲染dbname数据
-        }
-    },
-    error: function () {
+        type: "post",
+        url: "/sqlmng/autoselect/",
+        data: {env:env},
+        dataType: 'json',
+        success: function (result) {
+            dbs = result.dbs
+            mngs = result.mngs
+            $('#targetdb').empty()  //清空Select
+            $('#treater').empty()  //清空Select
+            for (d in dbs){
+                var dbshtml = '<option>'+dbs[d]+'</option>'
+                $('#targetdb').append(dbshtml) //为模态框渲染dbname数据
+            }
+            for (m in mngs){
+                var mngshtml = '<option>'+mngs[m]+'</option>'
+                $('#treater').append(mngshtml) //为模态框渲染dbname数据
+            }
+        },
+        error: function () {
 
-    },
-})
+        },
+    })
 })
 
 $('#sqlinputbtn').click(function(){

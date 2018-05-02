@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+  {% block title %}机房信息{% endblock %}
+  {% block breadcrunb %}
+      <h1>
+         Dashboard
+        <small>Version 2.0</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">机房信息</li>
+      </ol>
+  {% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+      <!-- Left col -->
+        <div class="col-md-12">
+        <div class="box box-info">
+
+            <div class="box-header with-border">
+              <h3 class="box-title">机房信息</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <form method="post"  class="form-horizontal">
+                    <div class="form-group">
+                      <label  class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>机房</label>
+                      <div class="col-sm-8">
+                          <input name="name" type="text" class="form-control" value="{{ idc.name }}" readonly="readonly"/>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                      <label  class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>机房地址</label>
+                      <div class="col-sm-8">
+                          <input name="address" type="text" class="form-control" placeholder="机房地址" value="{{ idc.address }}"/>
+                      </div>
+                  </div>
+
+                   <div class="form-group">
+                      <label  class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>销售姓名</label>
+                      <div class="col-sm-8">
+                          <input name="sales_name" type="text" class="form-control" placeholder="销售姓名" value="{{ idc.sales_name }}"/>
+                      </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>销售电话</label>
+                        <div class="col-sm-8">
+                              <input name="sales_phone" type="text" class="form-control" placeholder="销售电话"  value="{{ idc.sales_phone }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>客服电话</label>
+                        <div class="col-sm-8">
+                              <input name="customer_phone" type="text" class="form-control" placeholder="客服电话"  value="{{ idc.customer_phone }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>租用机柜</label>
+                        <div class="col-sm-8">
+                              <input name="rental_pods" type="text" class="form-control" placeholder="pod1,pod2"  value="{{ idc.rental_pods }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>带宽</label>
+                        <div class="col-sm-8">
+                              <input name="bandwidth" type="text" class="form-control" placeholder="带宽" value="{{ idc.bandwidth }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>带宽费用</label>
+                        <div class="col-sm-8">
+                              <input name="bandwidth_cost" type="text" class="form-control" placeholder="带宽费用"  value="{{ idc.bandwidth_cost }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>机柜费用(年)</label>
+                        <div class="col-sm-8">
+                              <input name="pod_cost" type="text" class="form-control" placeholder="机柜费用" value="{{ idc.pod_cost }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>合同编号</label>
+                        <div class="col-sm-8">
+                              <input name="contract_id" type="text" class="form-control" placeholder="合同编号" value="{{ idc.contract_id }}"/>
+                        </div>
+                   </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button id="delete_button" class="btn btn-danger">删除</button>
+                            <button id="submit_button" class="btn btn-primary" type="submit">更新</button>
+                        </div>
+                    </div>
+             </form>
+    </div>
+    <!-- /.body -->
+   </div>
+  <!-- /.box -->
+</div>
+<!-- /.col -->
+</div>
+<!-- /.row -->
+
+
+
+{% endblock %}
+
+{% block js %}
+
+$(".select2").select2({
+  width: '100%'
+});
+
+$('.datepicker').datepicker({
+    language: 'zh-CN',
+    autoclose: true,
+    format: 'yyyy-mm-dd',
+    endDate: '0d'
+});
+
+/*删除*/
+$("#delete_button").on('click',function(){
+    if(confirm("是否确认删除？")){
+        $.ajax({
+            url:"{% url 'cmdb:idc_detail' idc.id %}",
+            type: "DELETE",
+            success: function(res){
+            console.log(res) 
+            if (res.code == 0) {
+		    swal({
+			 "title": "删除",
+			 "text": res.result,
+			 "type": "success"
+		    }, function () {
+			 setTimeout(function () {
+			   window.location.href="{% url 'cmdb:idc_list' %}";
+			 }, 50);
+		     })
+		}else{
+			swal("操作失败", res.errmsg, "error")
+		     }
+	   }
+        })
+
+    }  // end confirm
+     return false
+})
+
+
+{% endblock %}

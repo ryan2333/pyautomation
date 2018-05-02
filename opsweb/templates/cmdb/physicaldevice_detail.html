@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+
+  {% block title %}{{ device.name }}设备信息{% endblock %}
+  {% block breadcrunb %}
+      <h1>
+         Dashboard
+        <small>Version 2.0</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">{{ device.name }}设备信息</li>
+      </ol>
+  {% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+      <!-- Left col -->
+        <div class="col-md-12">
+        <div class="box box-info">
+
+            <div class="box-header with-border">
+              <h3 class="box-title">{{ device.name }}设备信息</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <form method="post"  class="form-horizontal">
+                    <div class="form-group">
+                      <label  class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>设备名称</label>
+                      <div class="col-sm-8">
+                          <input name="name" type="text" class="form-control" value="{{ device.name }}"/>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                      <label  class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>设备厂商</label>
+                      <div class="col-sm-8">
+                          <input name="vendor" type="text" class="form-control" value="{{ device.vendor }}"/>
+                      </div>
+                  </div>
+
+                   <div class="form-group">
+                      <label  class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>设备型号</label>
+                      <div class="col-sm-8">
+                          <input name="model" type="text" class="form-control" value="{{ device.model }}"/>
+                      </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>设备类别</label>
+                        <div class="col-sm-8">
+                            <select class="select2 form-control"  name="category" data-placeholder="请选择设备类别..." >
+                                {% for catein in category %}
+                                    <option value="{{ catein.id }}" {% if catein == device.category %}selected="selected" {% endif %}>{{ catein.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>操作系统</label>
+                        <div class="col-sm-8">
+                              <input name="operation_system" type="text" class="form-control" value="{{ device.operation_system }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>管理IP</label>
+                        <div class="col-sm-8">
+                              <input name="mgrip" type="text" class="form-control" value="{{ device.mgrip }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px"></span>IP1</label>
+                        <div class="col-sm-8">
+                              <input name="ip1" type="text" class="form-control" value="{{ device.ip1 }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px"></span>IP2</label>
+                        <div class="col-sm-8">
+                              <input name="ip2" type="text" class="form-control" value="{{ device.ip2 }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px"></span>IP3</label>
+                        <div class="col-sm-8">
+                              <input name="ip3" type="text" class="form-control" value="{{ device.ip3 }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px"></span>IP4</label>
+                        <div class="col-sm-8">
+                              <input name="ip4" type="text" class="form-control" value="{{ device.ip4 }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>MAC1</label>
+                        <div class="col-sm-8">
+                              <input name="mac1" type="text" class="form-control" value="{{ device.mac1 }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>MAC2</label>
+                        <div class="col-sm-8">
+                              <input name="mac2" type="text" class="form-control" value="{{ device.mac2 }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px"></span>MAC3</label>
+                        <div class="col-sm-8">
+                              <input name="mac3" type="text" class="form-control" value="{{ device.mac3 }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px"></span>MAC4</label>
+                        <div class="col-sm-8">
+                              <input name="mac4" type="text" class="form-control" value="{{ device.mac4 }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>序列号</label>
+                        <div class="col-sm-8">
+                              <input name="sn" type="text" class="form-control" value="{{ device.sn }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>资产编号</label>
+                        <div class="col-sm-8">
+                              <input name="asset_number" type="text" class="form-control" value="{{ device.asset_number }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>设备位置</label>
+                        <div class="col-sm-8">
+                              <select class="select2 form-control"  name="asset_idc" id="asset_idc" data-placeholder="请选择设备所在IDC..." >
+                                {% for idc in asset_idc %}
+                                    <option value="{{ idc.id }}" {% if idc == device.idc %}selected="selected" {% endif %}>{{ idc.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>设备所在机柜</label>
+                        <div class="col-sm-8">
+{#                              <input name="asset_cab" type="text" class="form-control" value="{{ device.asset_cab }}"/>#}
+                            <select class="select2 form-control" id="asset_cab" name="asset_cab" data-placeholder="请选择设备所在机柜..." >
+                                {% for cab in asset_cabs %}
+                                    <option {% if cab == device.asset_cab %}selected="selected" {% endif %}>{{ cab }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>设备所在机柜位置</label>
+                        <div class="col-sm-8">
+                              <input name="asset_cab_location" type="text" class="form-control" value="{{ device.asset_cab_location }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>设备所有部门</label>
+                        <div class="col-sm-8">
+                            <select class="select2 form-control"  name="asset_owner_dep" data-placeholder="设备所有部门..." >
+                                <option {% if '链链金融' == device.asset_owner_dep %}selected="selected" {% endif %}>链链金融</option>
+                                <option {% if '贝壳金控' == device.asset_owner_dep %}selected="selected" {% endif %}>贝壳金控</option>
+                                <option {% if '中融信' == device.asset_owner_dep %}selected="selected" {% endif %}>中融信</option>
+                                <option {% if '链家网' == device.asset_owner_dep %}selected="selected" {% endif %}>链家网</option>
+                                <option {% if '理房通' == device.asset_owner_dep %}selected="selected" {% endif %}>理房通</option>
+                            </select>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>设备管理部门</label>
+                        <div class="col-sm-8">
+                            <select class="select2 form-control"  name="asset_manage_dep" data-placeholder="设备管理部门..." >
+                                <option {% if '链链金融' == device.asset_manage_dep %}selected="selected" {% endif %}>链链金融</option>
+                                <option {% if '贝壳金控' == device.asset_manage_dep %}selected="selected" {% endif %}>贝壳金控</option>
+                                <option {% if '中融信' == device.asset_manage_dep %}selected="selected" {% endif %}>中融信</option>
+                                <option {% if '链家网' == device.asset_manage_dep %}selected="selected" {% endif %}>链家网</option>
+                                <option {% if '理房通' == device.asset_manage_dep %}selected="selected" {% endif %}>理房通</option>
+                            </select>
+                            </select>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>设备使用部门</label>
+                        <div class="col-sm-8">
+                            <select class="select2 form-control"  name="asset_use_dep" data-placeholder="设备使用部门..." >
+                                <option {% if '链链金融' == device.asset_use_dep %}selected="selected" {% endif %}>链链金融</option>
+                                <option {% if '贝壳金控' == device.asset_use_dep %}selected="selected" {% endif %}>贝壳金控</option>
+                                <option {% if '中融信' == device.asset_use_dep %}selected="selected" {% endif %}>中融信</option>
+                                <option {% if '链家网' == device.asset_use_dep %}selected="selected" {% endif %}>链家网</option>
+                                <option {% if '理房通' == device.asset_use_dep %}selected="selected" {% endif %}>理房通</option>
+                            </select>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>设备管理员</label>
+                        <div class="col-sm-8">
+                            <select class="select2 form-control"  name="asset_admin" data-placeholder="设备管理员..." >
+                                {% for admin in asset_admin %}
+                                    <option value="{{ admin.id }}" {% if admin == device.asset_admin %}selected="selected" {% endif %}>{{ admin.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>采购日期</label>
+                        <div class="col-sm-8">
+                              <input name="purchase_date" type="text" class="form-control datepicker" value="{{ device.purchase_date }}"/>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>资产描述(CPU|内存|存储|其它)</label>
+                        <div class="col-sm-8">
+                            <textarea name="decription" class="form-control" style="text-align: left" cols="50" rows="5">
+                                {{ device.decription }}
+                            </textarea>
+                        </div>
+                   </div>
+
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label"><span style="color:red; margin-right:10px">*</span>设备状态</label>
+                        <div class="col-sm-8">
+                            <select class="form-control"  name="status" data-placeholder="设备状态..." >
+                                <option value="0" {% if 0 == device.status %}selected="selected" {% endif %}>正常</option>
+                                <option value="1" {% if 1 == device.status %}selected="selected" {% endif %}>闲置</option>
+                                <option value="255" {% if 255 == device.status %}selected="selected" {% endif %}>报废</option>
+                            </select>
+                        </div>
+                   </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button id="delete_button" class="btn btn-danger">删除</button>
+                            <button id="submit_button" class="btn btn-primary" type="submit">更新</button>
+                        </div>
+                    </div>
+             </form>
+    </div>
+    <!-- /.body -->
+   </div>
+  <!-- /.box -->
+</div>
+<!-- /.col -->
+</div>
+<!-- /.row -->
+
+
+
+{% endblock %}
+
+{% block js %}
+
+$(".select2").select2({
+  width: '100%'
+});
+
+$('.datepicker').datepicker({
+    language: 'zh-CN',
+    autoclose: true,
+    format: 'yyyy-mm-dd',
+    endDate: '0d'
+});
+
+$('select#asset_idc').change(function(){
+    idc_id = $(this).val()
+    console.log(idc_id)
+    $.ajax({
+        type: "post",
+        url: "/cmdb/assetcabselect/",
+        data: {idcid:idc_id},
+        dataType: 'json',
+        success: function (result) {
+            cabs = result.cabs
+            $('#asset_cab').empty()  //清空Select
+            var cabshtml = '<option>请选择机柜</option>'
+            $('#asset_cab').append(cabshtml)
+            for (cab in cabs){
+                cabshtml = '<option >'+cabs[cab]+'</option>'
+                $('#asset_cab').append(cabshtml) //为模态框渲染dbname数据
+            }
+        },
+        error: function () {
+
+        },
+    })
+});
+
+/*删除*/
+$("#delete_button").on('click',function(){
+    if(confirm("是否确认删除？")){
+        $.ajax({
+            url:"{% url 'cmdb:idc_detail' idc.id %}",
+            type: "DELETE",
+            success: function(res){
+            console.log(res) 
+            if (res.code == 0) {
+		    swal({
+			 "title": "删除",
+			 "text": res.result,
+			 "type": "success"
+		    }, function () {
+			 setTimeout(function () {
+			   window.location.href="{% url 'cmdb:idc_list' %}";
+			 }, 50);
+		     })
+		}else{
+			swal("操作失败", res.errmsg, "error")
+		     }
+	   }
+        })
+
+    }  // end confirm
+     return false
+})
+
+
+{% endblock %}

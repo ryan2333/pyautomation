@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="table-responsive">
+<h2 class="sub-header">{{ passmgr.account }}详细信息</h2>
+<table class="table table-striped">
+    <tbody>
+        <tr><td><b>帐户：</b></td><td>{{ passmgr.account }}</td></tr>
+        <tr><td><b>密码：</b></td><td>{{ passmgr.password }}</td></tr>
+        <tr><td><b>历史密码1：</b></td><td>{{ passmgr.bpasswd1 }}</td></tr>
+        <tr><td><b>历史密码2：</b></td><td>{{ passmgr.bpasswd2 }}</td></tr>
+        <tr><td><b>历史密码3：</b></td><td>{{ passmgr.bpasswd3 }}</td></tr>
+        <tr><td><b>主机IP：</b></td><td>{{ passmgr.host }}</td></tr>
+        <tr><td><b>备注：</b></td><td>{{ passmgr.descript }}</td></tr>
+        <tr><td><b>当前时间：</b></td><td>{{ passmgr.timenow }}</td></tr>
+    </tbody>
+</table>
+</div>
+{% endblock %}
