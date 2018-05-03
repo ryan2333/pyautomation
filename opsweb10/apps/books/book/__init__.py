@@ -11,6 +11,8 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from pure_pagination.mixins import PaginationMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
 
 from django.conf import settings
 from books.models import Publish, Author, Book
@@ -48,6 +50,7 @@ class BookListView(LoginRequiredMixin, PaginationMixin, ListView):
         context['authors'] = Author.objects.all()
         return context
 
+    @method_decorator(permission_required('books.book_admin', login_url="/"))
     def post(self, request):
         form = BookForm(request.POST)
         if form.is_valid():
@@ -82,6 +85,7 @@ class BookDetailView(LoginRequiredMixin, DetailView):
         author_list = [str(author.id) for author in book.authors.all()]
         return author_list
 
+    @method_decorator(permission_required('books.book_admin', login_url="/"))
     def post(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
         p = self.model.objects.get(pk=pk)
@@ -96,6 +100,7 @@ class BookDetailView(LoginRequiredMixin, DetailView):
         return render(request, settings.JUMP_PAGE, res)
         # return HttpResponseRedirect(reverse('books:publish_detail',args=[pk]))
 
+    @method_decorator(permission_required('books.book_admin', login_url="/"))
     def delete(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
         # 通过出版社对象查所在该出版社的书籍，如果有关联书籍不可以删除，没有关联书籍可以删除

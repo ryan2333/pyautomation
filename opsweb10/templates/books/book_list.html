@@ -64,13 +64,19 @@
 	      <th>作者</th>
 	      <th>出版商</th>
 	      <th>出版时间</th>
+          {% if perms.books.book_admin %}
 	      <th>操作</th>
+          {% endif %}
 	  </tr>
 	  </thead>
 	  <tbody>
 	    {% for book in book_list %}
 		<tr>
+            {% if perms.books.book_admin %}
 		    <td> <a href="{% url 'books:book_detail'  book.id %}">{{ book.name }}</a> </td>
+            {% else %}
+            <td>{{ book.name }}</td>
+            {% endif %}
 		    <td>
 			{% for author in book.authors.all %}
 			 {{ author.name }},
@@ -78,9 +84,11 @@
 		    </td>
 		    <td> {{ book.publisher.name }}</td>
 		    <td> {{ book.publication_date }}</td>
+            {% if perms.books.book_admin %}
 		    <td>
 			<a type="button" class="btn btn-info btn-xs"  href="{% url 'books:book_detail'  book.id %}" >修改</a>
 		    </td>
+            {% endif %}
 		</tr>
 	    {% endfor %}
 	  </tbody>

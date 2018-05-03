@@ -181,9 +181,8 @@ class ChangePermissionView(LoginRequiredMixin, DetailView):
         group_id_list = request.POST.getlist('groups_selected', [])
         perm_id_list = request.POST.getlist('perms_selected')
         pk = request.POST.get('uid')
-        print pk
         user = self.model.objects.get(pk=request.POST.get('uid'))
-        print user, group_id_list, perm_id_list
+
         try:
             user.groups.set(group_id_list)
             user.user_permissions.set(perm_id_list)

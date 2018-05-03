@@ -35,7 +35,7 @@ class PermissionListView(LoginRequiredMixin, PaginationMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(PermissionListView, self).get_context_data(**kwargs)
         context['keyword'] = self.keyword
-        context['all_content_type'] = ContentType.objects.all()
+        # context['all_content_type'] = ContentType.objects.all()
         return context
 
     def post(self, request):
